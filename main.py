@@ -24,10 +24,12 @@ def isAllBlack(px, width, height):
 
 
 def imageProcessing(frame, thres):
-    '''Resizing > color to gray > gray to binary
-            returning binary with thres threshold
     '''
-    return cv2.threshold(cv2.cvtColor(cv2.resize(frame, (800, 600), fx = 0, fy = 0), cv2.COLOR_BGR2GRAY), thres, 250, cv2.THRESH_BINARY)[1]
+    Resizing > color to gray > gray to binary
+    returning binary with thres threshold
+    '''
+    return cv2.threshold(cv2.cvtColor(cv2.resize(frame, (800, 600),
+		fx = 0, fy = 0), cv2.COLOR_BGR2GRAY), thres, 250, cv2.THRESH_BINARY)[1]
 
 def show_plot(speed_ax, time_ax):
     speed_ax = np.array(speed_ax)
