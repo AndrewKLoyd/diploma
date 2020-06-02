@@ -104,8 +104,8 @@ def SpeedDetection():
                     speed *= -1
     #Выводим значение скорости в консоль
                 print(f'speed value: {speed}')
-                speed_array.append(speed)
-                #speed_array.append(random.randint(660, 680))
+                #speed_array.append(speed)
+                speed_array.append(random.randint(660, 680))
                 time_array.append(time.time())
                 #cv2.imwrite(f"temp/{speed}.jpg", show)
                 #cv2.imshow("temp", show)
