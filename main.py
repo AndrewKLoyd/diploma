@@ -3,7 +3,7 @@ import cv2
 import time
 import matplotlib.pyplot as plt
 import random
-
+from math import pi
 
 #Проверяем, чтобы все пиксели в заданном диапазоне были белыми
 def isAllWhite(px, width, height):
@@ -51,6 +51,7 @@ def SpeedDetection():
     frstT = 0
     scndT = 0
 
+    currentTime = 0
 
 
 
@@ -60,7 +61,7 @@ def SpeedDetection():
     n = 6
 
     speed_array = [0]
-    time_array = list()
+    time_array = [currentTime]
 
     #Бесконечный цикл для обработки каждого кадра
     while(True):
@@ -95,8 +96,9 @@ def SpeedDetection():
     #Если первое и второе время были заданны, то расчитываем скорость
             if scndT > 1 and frstT > 1:
     #Расчёт скорости
-                speed = 360/(frstT-scndT)
-                speed = round(speed)
+                speed = 2*pi*60/(frstT-scndT)
+                currentTime += (frstT - scndT) if (frstT - scndT) > 0 else -(frstT - scndT)
+               # speed = round(speed)
     #Показывыаем момент, когда сработал маркер
                 # cv2.imshow('win2', show)
     #Если скорость < 0, умнажаем на -1 (не несёт логической нагрузки)
@@ -106,7 +108,7 @@ def SpeedDetection():
                 print(f'speed value: {speed}')
                 #speed_array.append(speed)
                 speed_array.append(random.randint(660, 680))
-                time_array.append(time.time())
+                time_array.append(currentTime)
                 #cv2.imwrite(f"temp/{speed}.jpg", show)
                 #cv2.imshow("temp", show)
     #Проверяем были ли все пиксели черные прежде чем зарегистрировать новые белые
@@ -122,7 +124,7 @@ def SpeedDetection():
     cap.release()
     			# Закрываем окно
     cv2.destroyAllWindows()
-    speed_array.pop(len(time_array)-1)
+    #speed_array.pop(len(time_array)-1)
     show_plot(speed_array, time_array)
 
 
