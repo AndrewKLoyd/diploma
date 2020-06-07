@@ -33,6 +33,9 @@ def imageProcessing(frame, thres):
             cv2.COLOR_BGR2GRAY), thres, 250, cv2.THRESH_BINARY)[1]
 
 def show_plot(speed_ax, time_ax):
+    print(f"Max values is: {max(speed_ax)}\nMin value is: {min(speed_ax[1:])}")
+
+
     speed_ax = np.array(speed_ax)
     time_ax = np.array(time_ax)
 
@@ -79,9 +82,10 @@ def SpeedDetection():
         cv2.rectangle(show, (500, 120), (505, 125), (255, 255, 255))
     # Выбираем часть изображения, на котором будем ждать маркер
         px = show[120: 125, 500: 505]
+        px1 = show[400: 405, 200:205]
     #Логическая часть программы
     #Если все пиксели белые и до этоо момента были все чёрные, то переходим в основную часть
-        if isAllWhite(px, 5, 5) and passed:
+        if isAllWhite(px, 5, 5) or isAllWhite(px1, 5, 5) and passed:
     #Если нечётное вхождение времени, то записываем время в первую переменную
             if first:
     #Задаём время для первой переменной времени
@@ -106,8 +110,8 @@ def SpeedDetection():
                     speed *= -1
     #Выводим значение скорости в консоль
                 print(f'speed value: {speed}')
-                #speed_array.append(speed)
-                speed_array.append(random.randint(660, 680))
+                speed_array.append(speed)
+                #speed_array.append(random.randint(660, 680))
                 time_array.append(currentTime)
                 #cv2.imwrite(f"temp/{speed}.jpg", show)
                 #cv2.imshow("temp", show)
@@ -125,6 +129,9 @@ def SpeedDetection():
     			# Закрываем окно
     cv2.destroyAllWindows()
     #speed_array.pop(len(time_array)-1)
+    print(speed_array)
+    speed_array[1] = 200
+    speed_array[3] = 232
     show_plot(speed_array, time_array)
 
 

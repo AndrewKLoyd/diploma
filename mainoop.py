@@ -11,14 +11,13 @@ class SpeedDetection:
 		self.cap = cv2.VideoCapture(0) if pathToVideo == str(0) else cv2.VideoCapture(pathToVideo, 0)
 		self.first = True
 		self.frstT = 0
-		
+
 		self.scndT = 0
 		self.currentTime = 0
 
 		self.speed = 0
 		self.passed = True
 		# Количество лопастей
-
 		self.speed_array = [0]
 		self.time_array = [self.currentTime]
 
