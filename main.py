@@ -4,6 +4,7 @@ import time
 import matplotlib.pyplot as plt
 import random
 from math import pi
+from scipy.ndimage.filters import gaussian_filter1d
 
 #Проверяем, чтобы все пиксели в заданном диапазоне были белыми
 def isAllWhite(px, width, height):
@@ -33,14 +34,16 @@ def imageProcessing(frame, thres):
             cv2.COLOR_BGR2GRAY), thres, 250, cv2.THRESH_BINARY)[1]
 
 def show_plot(speed_ax, time_ax):
-    print(f"Max values is: {max(speed_ax)}\nMin value is: {min(speed_ax[1:])}")
-
 
     speed_ax = np.array(speed_ax)
     time_ax = np.array(time_ax)
 
+    speed_ax = gaussian_filter1d(speed_ax, sigma = 2)
+
     fig, ax = plt.subplots()
     ax.plot(time_ax, speed_ax)
+    plt.ylabel("Angular velocity, rpm")
+    plt.xlabel("Time, s")
     plt.show()
 
 
@@ -117,10 +120,10 @@ def SpeedDetection():
                 #cv2.imshow("temp", show)
     #Проверяем были ли все пиксели черные прежде чем зарегистрировать новые белые
         passed = isAllBlack(px, 5, 5)
-    # Display the resulting frame
-    #cv2.imshow('window', show)
-    #cv2.imshow('Window2', frame)
-    # Если нажата клавиша 'q' выходим из программы
+        # Display the resulting frame
+        #cv2.imshow('window', show)
+        #cv2.imshow('Window2', frame)
+        # Если нажата клавиша 'q' выходим из программы
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 # Заканчиваем считывание файла
