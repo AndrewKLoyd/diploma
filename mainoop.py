@@ -4,10 +4,11 @@ import time
 import matplotlib.pyplot as plt
 import random
 from math import pi
+import socket
 
 class SpeedDetection:
 
-	def __init__(self, pathToVideo):
+	def __init__(self, pathToVideo, ip, port):
 		self.cap = cv2.VideoCapture(0) if pathToVideo == str(0) else cv2.VideoCapture(pathToVideo, 0)
 		self.first = True
 		self.frstT = 0
@@ -21,6 +22,10 @@ class SpeedDetection:
 		self.speed_array = [0]
 		self.time_array = [self.currentTime]
 
+		self.ip = ip
+		self.port = port
+
+		self.sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
 	def isAllWhite(self, px, width, height):
 		counter = 0
@@ -53,7 +58,12 @@ class SpeedDetection:
 	    ax.plot(time_ax, speed_ax)
 	    plt.show()
 
-
+	def sendInfo(self, frame, speedInfo):
+		d = frame.flatten ()
+    	s = d.tostring ()
+	 	for i in xrange(20):
+        	self.sock.sendto(s[i*46080:(i+1)*46080],(self.ip, self.port))
+		pass
 
 	def speedDetection(self):
 	#Получаем видео файл
@@ -99,6 +109,7 @@ class SpeedDetection:
 	                    self.speed *= -1
 	    #Выводим значение скорости в консоль
 	                print(f'speed value: {self.speed}')
+					self.sendInfo(frame, self.speed)
 	                #speed_array.append(speed)
 	                self.speed_array.append(random.randint(660, 680))
 	                self.time_array.append(self.currentTime)
@@ -106,6 +117,7 @@ class SpeedDetection:
 	                #cv2.imshow("temp", show)
 	    #Проверяем были ли все пиксели черные прежде чем зарегистрировать новые белые
 	        self.passed = self.isAllBlack(px, 5, 5)
+
 	    # Display the resulting frame
 	    #cv2.imshow('window', show)
 	    #cv2.imshow('Window2', frame)
